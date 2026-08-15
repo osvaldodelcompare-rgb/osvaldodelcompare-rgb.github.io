@@ -1,0 +1,2432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNDERGROUND — Red Social de Bares y Bandas en Vivo | Preview</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    :root {
+      --bg-dark: #0B0B0F;
+      --bg-surface: #16151C;
+      --bg-surface-elevated: #1F1E27;
+      --bg-surface-hover: #292834;
+      
+      --primary: #B026FF;
+      --primary-glow: rgba(176, 38, 255, 0.4);
+      --primary-hover: #C552FF;
+      
+      --accent: #00E5C7;
+      --accent-glow: rgba(0, 229, 199, 0.35);
+      
+      --text-main: #F3F3F7;
+      --text-muted: #9E9EB0;
+      --text-dark: #68687B;
+      
+      --border-color: rgba(176, 38, 255, 0.18);
+      --border-light: rgba(255, 255, 255, 0.08);
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      
+      --transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.45);
+      --shadow-neon: 0 0 20px rgba(176, 38, 255, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.4;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, h4, .font-title {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-surface-elevated);
+      border-radius: var(--radius-full);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      max-width: 1440px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 11, 15, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    .brand-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #FFFFFF 30%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-tag {
+      font-size: 0.65rem;
+      background: rgba(176, 38, 255, 0.2);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      list-style: none;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.1rem;
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .nav-btn:hover {
+      color: var(--text-main);
+      background: var(--bg-surface-elevated);
+      border-color: var(--border-light);
+    }
+
+    .nav-btn.active {
+      color: #fff;
+      background: rgba(176, 38, 255, 0.15);
+      border-color: var(--primary);
+      box-shadow: 0 0 12px rgba(176, 38, 255, 0.2);
+    }
+
+    .badge-count {
+      background: var(--accent);
+      color: #000;
+      font-size: 0.7rem;
+      font-weight: 700;
+      border-radius: var(--radius-full);
+      padding: 1px 6px;
+      line-height: 1.2;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      outline: none;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #8E00E6);
+      color: #fff;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--primary-hover), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--primary-glow);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #0B0B0F;
+      box-shadow: 0 4px 15px var(--accent-glow);
+    }
+    .btn-accent:hover {
+      background: #26ffdf;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--accent-glow);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+    .btn-outline:hover {
+      background: var(--bg-surface-elevated);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .btn-icon {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      color: var(--text-muted);
+    }
+    .btn-icon:hover {
+      color: var(--text-main);
+      border-color: var(--primary);
+      background: var(--bg-surface-elevated);
+    }
+
+    /* Simulator Banner */
+    .simulator-banner {
+      background: linear-gradient(90deg, rgba(176,38,255,0.12), rgba(0,229,199,0.12));
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.5rem 1.5rem;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-muted);
+    }
+
+    .sim-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-surface-elevated);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+      color: var(--text-main);
+    }
+
+    /* Main Grid Layout */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      flex: 1;
+    }
+
+    @media (max-width: 1024px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Search & Filter Bar */
+    .filter-section {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .search-box {
+      position: relative;
+      margin-bottom: 0.85rem;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem 0.75rem 2.6rem;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dark);
+      pointer-events: none;
+    }
+
+    .genre-chips {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.2rem;
+    }
+
+    .chip {
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-full);
+      background: var(--bg-dark);
+      border: 1px solid var(--border-light);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+
+    .chip:hover {
+      border-color: var(--primary);
+      color: var(--text-main);
+    }
+
+    .chip.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 0 10px var(--primary-glow);
+    }
+
+    /* Map Card */
+    .map-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+      position: relative;
+      box-shadow: var(--shadow-card);
+    }
+
+    .map-header {
+      padding: 0.85rem 1.1rem;
+      background: rgba(22, 21, 28, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .map-canvas-container {
+      position: relative;
+      height: 290px;
+      background: #0d0e14;
+      background-image: 
+        radial-gradient(circle at 25% 40%, rgba(176, 38, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 75% 70%, rgba(0, 229, 199, 0.1) 0%, transparent 40%);
+      overflow: hidden;
+    }
+
+    .map-grid-svg {
+      width: 100%;
+      height: 100%;
+      opacity: 0.35;
+    }
+
+    .map-pin {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 10;
+    }
+
+    .map-pin:hover {
+      transform: translate(-50%, -115%) scale(1.15);
+      z-index: 20;
+    }
+
+    .pin-body {
+      background: var(--bg-surface-elevated);
+      border: 2px solid var(--primary);
+      padding: 4px 9px;
+      border-radius: var(--radius-md);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6), 0 0 12px var(--primary-glow);
+      white-space: nowrap;
+    }
+
+    .pin-pulse {
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .pin-pulse::after {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.6); opacity: 1; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    .map-popup {
+      position: absolute;
+      bottom: 0.85rem;
+      left: 1rem;
+      right: 1rem;
+      background: rgba(22, 21, 28, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+      z-index: 30;
+    }
+
+    /* Event Feed Compact Grid */
+    .feed-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .post-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .post-card:hover {
+      border-color: var(--border-color);
+      box-shadow: var(--shadow-card), 0 0 20px rgba(176, 38, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .post-header {
+      padding: 0.75rem 0.85rem 0.4rem 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .venue-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .venue-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      border: 1.5px solid var(--primary);
+      background: var(--bg-surface-elevated);
+      cursor: pointer;
+    }
+
+    .venue-name {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .venue-name:hover {
+      color: var(--accent);
+    }
+
+    .venue-location {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .badge-post {
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .badge-event-tag {
+      background: rgba(176, 38, 255, 0.2);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .badge-promo-tag {
+      background: rgba(0, 229, 199, 0.18);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    .post-content {
+      padding: 0.4rem 0.85rem 0.6rem 0.85rem;
+    }
+
+    .post-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .post-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .post-media-box {
+      width: 100%;
+      height: 140px;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-dark);
+    }
+
+    .post-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .post-card:hover .post-img {
+      transform: scale(1.04);
+    }
+
+    .media-overlay-details {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(11, 11, 15, 0.95) 85%);
+      padding: 0.75rem 0.85rem 0.5rem 0.85rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .event-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .meta-item {
+      font-size: 0.74rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .event-price-tag {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .post-footer {
+      padding: 0.65rem 0.85rem;
+      background: rgba(0, 0, 0, 0.25);
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-top: auto;
+    }
+
+    .post-footer .btn {
+      padding: 0.45rem 0.75rem;
+      font-size: 0.8rem;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .ad-banner-card {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(22, 21, 28, 0.95), rgba(31, 30, 39, 0.95));
+      border: 1px dashed var(--accent);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.1rem;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .ad-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.4rem;
+    }
+
+    .ad-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      background: rgba(0, 229, 199, 0.15);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+    }
+
+    .ad-note {
+      font-size: 0.72rem;
+      color: var(--text-dark);
+      font-style: italic;
+    }
+
+    /* Right Sidebar */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .sidebar-widget {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .tickets-preview-box {
+      background: rgba(176, 38, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .qr-container {
+      background: #fff;
+      padding: 0.85rem;
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    .qr-code-img {
+      width: 130px;
+      height: 130px;
+    }
+
+    /* Modals & Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(14px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 540px;
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 30px var(--primary-glow);
+      transform: scale(0.95);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: scale(1);
+    }
+
+    /* Mercado Pago Drawer */
+    .mp-brand-header {
+      background: #009EE3;
+      color: #fff;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top-left-radius: var(--radius-lg);
+      border-top-right-radius: var(--radius-lg);
+    }
+
+    .mp-logo-text {
+      font-weight: 800;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mp-option {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-light);
+      padding: 0.85rem;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      margin-bottom: 0.65rem;
+      transition: var(--transition);
+    }
+
+    .mp-option:hover, .mp-option.selected {
+      border-color: #009EE3;
+      background: rgba(0, 158, 227, 0.1);
+    }
+
+    /* ================= FACEBOOK STYLE VENUE WALL MODAL ================= */
+    .wall-modal-card {
+      max-width: 680px !important;
+      padding: 0 !important;
+      border-color: var(--primary) !important;
+      background: var(--bg-surface) !important;
+    }
+
+    .wall-cover-container {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      background: #111;
+      overflow: hidden;
+    }
+
+    .wall-cover-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .wall-cover-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(22, 21, 28, 0.95));
+    }
+
+    .wall-profile-header {
+      position: relative;
+      padding: 0 1.5rem 1rem 1.5rem;
+      margin-top: -50px;
+    }
+
+    .wall-header-top {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .wall-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--bg-surface);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.8), 0 0 15px var(--primary-glow);
+      background: var(--bg-dark);
+    }
+
+    .wall-header-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .wall-title-box {
+      margin-bottom: 0.85rem;
+    }
+
+    .wall-venue-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .wall-category {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Wall Nav Tabs (Facebook Style) */
+    .wall-nav-bar {
+      display: flex;
+      gap: 0.25rem;
+      border-bottom: 1px solid var(--border-light);
+      padding: 0 1.25rem;
+      background: var(--bg-surface);
+    }
+
+    .wall-tab-btn {
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+
+    .wall-tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .wall-tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .wall-body-content {
+      padding: 1.25rem;
+      background: var(--bg-dark);
+      min-height: 380px;
+    }
+
+    /* Wall Post Item (Facebook Style Post) */
+    .wall-post {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .wall-post-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .wall-post-author {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .wall-author-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--primary);
+    }
+
+    .wall-post-time {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .wall-post-body {
+      font-size: 0.88rem;
+      color: var(--text-main);
+      line-height: 1.5;
+      margin-bottom: 0.85rem;
+    }
+
+    .wall-post-image {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: 0.85rem;
+    }
+
+    .wall-post-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.65rem;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .wall-action-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .wall-action-btn:hover {
+      background: var(--bg-surface-elevated);
+      color: var(--text-main);
+    }
+
+    .wall-action-btn.liked {
+      color: #FF4757;
+    }
+
+    /* Mobile Bottom Nav */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(11, 11, 15, 0.95);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border-color);
+      padding: 0.6rem 1rem;
+      z-index: 99;
+      justify-content: space-around;
+    }
+
+    .mobile-tab-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .mobile-tab-btn.active {
+      color: var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      html, body {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+      }
+      .app-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+      }
+      .navbar {
+        padding: 0.5rem 0.75rem !important;
+        width: 100% !important;
+      }
+      .brand-text {
+        font-size: 1.05rem !important;
+      }
+      .brand-logo {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.9rem !important;
+      }
+      .brand-tag {
+        display: none !important;
+      }
+      .nav-links {
+        display: none !important;
+      }
+      .header-actions {
+        gap: 0.4rem !important;
+      }
+      .header-actions .btn {
+        padding: 0.4rem 0.7rem !important;
+        font-size: 0.76rem !important;
+      }
+      .main-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 0.5rem 0.5rem 4.5rem 0.5rem !important;
+        gap: 0.65rem !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+      }
+      .filter-section {
+        padding: 0.65rem !important;
+        margin-bottom: 0.5rem !important;
+        width: 100% !important;
+        border-radius: 12px !important;
+      }
+      .search-box {
+        margin-bottom: 0.5rem !important;
+      }
+      .search-input {
+        font-size: 0.78rem !important;
+        padding: 0.5rem 0.75rem 0.5rem 2.2rem !important;
+        border-radius: 8px !important;
+      }
+      .search-icon {
+        left: 0.7rem !important;
+        width: 13px !important;
+      }
+      .genre-chips {
+        gap: 0.3rem !important;
+        width: 100% !important;
+      }
+      .chip {
+        padding: 0.3rem 0.6rem !important;
+        font-size: 0.72rem !important;
+      }
+      .map-card {
+        margin-bottom: 0.65rem !important;
+        width: 100% !important;
+        border-radius: 12px !important;
+      }
+      .map-header {
+        padding: 0.5rem 0.75rem !important;
+      }
+      .map-canvas-container {
+        height: 160px !important;
+      }
+      .map-pin {
+        transform: translate(-50%, -100%) scale(0.8) !important;
+      }
+      .map-popup {
+        padding: 0.5rem 0.75rem !important;
+        bottom: 0.4rem !important;
+        left: 0.4rem !important;
+        right: 0.4rem !important;
+        gap: 0.4rem !important;
+      }
+      .feed-container {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.65rem !important;
+        width: 100% !important;
+      }
+      .post-card {
+        width: 100% !important;
+        border-radius: 12px !important;
+      }
+      .post-header {
+        padding: 0.5rem 0.65rem 0.3rem 0.65rem !important;
+      }
+      .venue-avatar {
+        width: 28px !important;
+        height: 28px !important;
+      }
+      .venue-name {
+        font-size: 0.8rem !important;
+      }
+      .venue-location {
+        font-size: 0.68rem !important;
+      }
+      .badge-post {
+        font-size: 0.6rem !important;
+        padding: 2px 5px !important;
+      }
+      .post-content {
+        padding: 0.3rem 0.65rem 0.4rem 0.65rem !important;
+      }
+      .post-title {
+        font-size: 0.88rem !important;
+      }
+      .post-desc {
+        font-size: 0.74rem !important;
+        margin-bottom: 0.35rem !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 1 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+      }
+      .post-media-box {
+        height: 110px !important;
+      }
+      .media-overlay-details {
+        padding: 0.45rem 0.65rem 0.35rem 0.65rem !important;
+      }
+      .meta-item {
+        font-size: 0.68rem !important;
+      }
+      .event-price-tag {
+        font-size: 0.95rem !important;
+      }
+      .post-footer {
+        padding: 0.5rem 0.65rem !important;
+      }
+      .post-footer .btn {
+        padding: 0.38rem 0.6rem !important;
+        font-size: 0.76rem !important;
+      }
+      .ad-banner-card {
+        padding: 0.65rem !important;
+        border-radius: 10px !important;
+      }
+      .sidebar {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.65rem !important;
+        width: 100% !important;
+      }
+      .sidebar-widget {
+        padding: 0.75rem !important;
+        border-radius: 12px !important;
+      }
+      .qr-container {
+        padding: 0.65rem !important;
+      }
+      .qr-code-img {
+        width: 100px !important;
+        height: 100px !important;
+      }
+      /* Modals */
+      .modal-card {
+        width: 94% !important;
+        max-width: 94% !important;
+        max-height: 85vh !important;
+        margin: auto !important;
+        border-radius: 14px !important;
+        box-sizing: border-box !important;
+      }
+      .wall-modal-card {
+        width: 94% !important;
+        max-width: 94% !important;
+      }
+      .wall-cover-container {
+        height: 110px !important;
+      }
+      .wall-avatar {
+        width: 60px !important;
+        height: 60px !important;
+      }
+      .wall-profile-header {
+        margin-top: -28px !important;
+        padding: 0 0.75rem 0.5rem 0.75rem !important;
+      }
+      .wall-venue-name {
+        font-size: 1.1rem !important;
+      }
+      .wall-category {
+        font-size: 0.74rem !important;
+      }
+      .wall-post {
+        padding: 0.65rem !important;
+        border-radius: 10px !important;
+      }
+      .wall-post-image {
+        height: 140px !important;
+      }
+      .mobile-bottom-nav {
+        display: flex !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        background: rgba(11, 11, 15, 0.96) !important;
+        padding: 0.4rem 0.75rem !important;
+      }
+    }
+
+    .mobile-mode-container {
+      max-width: 410px !important;
+      margin: 2rem auto !important;
+      border: 12px solid #252430;
+      border-radius: 40px;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.9), 0 0 40px var(--primary-glow);
+      overflow: hidden;
+      min-height: 840px;
+    }
+
+    .mobile-mode-container .mobile-bottom-nav {
+      display: flex !important;
+      position: absolute !important;
+    }
+    .mobile-mode-container .main-grid {
+      grid-template-columns: 1fr !important;
+      padding-bottom: 5rem !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container" id="appRoot">
+
+  <!-- Top Simulator Banner -->
+  <div class="simulator-banner">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <i data-lucide="sparkles" style="color: var(--accent); width: 16px;"></i>
+      <span><strong>PROTOTIPO MURO SOCIAL:</strong> Tocá en cualquier Bar para abrir su Muro estilo Facebook/Instagram</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <button class="sim-toggle" id="toggleMobileBtn" onclick="toggleMobileView()">
+        <i data-lucide="smartphone" style="width: 14px;"></i>
+        <span id="toggleMobileText">Vista Móvil</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="#" class="brand">
+      <div class="brand-logo">U</div>
+      <div>
+        <span class="brand-text">UNDERGROUND</span>
+        <span class="brand-tag">Social Wall v1.0</span>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li>
+        <a href="#mapa" class="nav-btn active" onclick="switchNavTab(this, 'feedView')">
+          <i data-lucide="map-pin" style="width: 18px;"></i> Mapa & Feed
+        </a>
+      </li>
+      <li>
+        <a href="#buscar" class="nav-btn" onclick="focusSearch()">
+          <i data-lucide="search" style="width: 18px;"></i> Buscar
+        </a>
+      </li>
+      <li>
+        <a href="#entradas" class="nav-btn" onclick="openTicketsModal()">
+          <i data-lucide="ticket" style="width: 18px;"></i> Mis Entradas
+          <span class="badge-count">1</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="header-actions">
+      <button class="btn btn-outline btn-icon" title="Notificaciones Push" onclick="showPushNotificationToast()">
+        <i data-lucide="bell" style="width: 18px;"></i>
+      </button>
+      <button class="btn btn-primary" onclick="openVenueWallModal('broder')">
+        <i data-lucide="layout" style="width: 18px;"></i> Ver Muro Bröder
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Grid -->
+  <div class="main-grid">
+
+    <!-- Left Column -->
+    <div style="display: flex; flex-direction: column;">
+
+      <!-- Search & Filters -->
+      <div class="filter-section">
+        <div class="search-box">
+          <i data-lucide="search" class="search-icon"></i>
+          <input type="text" class="search-input" id="searchInput" placeholder="Buscar bar, banda o género (Rock, Jazz, Cumbia...)" onkeyup="filterEvents()">
+        </div>
+        <div class="genre-chips">
+          <button class="chip active" onclick="selectGenre(this, 'all')">🔥 Todos</button>
+          <button class="chip" onclick="selectGenre(this, 'Rock')">🎸 Rock / Punk</button>
+          <button class="chip" onclick="selectGenre(this, 'Jazz')">🎷 Jazz / Synth</button>
+          <button class="chip" onclick="selectGenre(this, 'Electrónica')">⚡ Electrónica</button>
+          <button class="chip" onclick="selectGenre(this, 'Cumbia')">🪗 Cumbia & Funk</button>
+        </div>
+      </div>
+
+      <!-- Map Mockup -->
+      <div class="map-card" id="mapa">
+        <div class="map-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="map" style="color: var(--primary); width: 20px;"></i>
+            <span style="font-weight: 700; font-size: 0.92rem;">Mapa de Bares en Vivo — La Plata / CABA</span>
+          </div>
+          <span style="font-size: 0.78rem; color: var(--accent); background: rgba(0,229,199,0.1); padding: 3px 8px; border-radius: 4px; font-weight: 600;">
+            4 Venues activos hoy
+          </span>
+        </div>
+
+        <div class="map-canvas-container">
+          <svg class="map-grid-svg" viewBox="0 0 800 400">
+            <line x1="0" y1="100" x2="800" y2="100" stroke="#333" stroke-width="2" stroke-dasharray="8 4"/>
+            <line x1="0" y1="250" x2="800" y2="250" stroke="#333" stroke-width="2"/>
+            <line x1="200" y1="0" x2="200" y2="400" stroke="#333" stroke-width="2"/>
+            <line x1="550" y1="0" x2="550" y2="400" stroke="#333" stroke-width="2" stroke-dasharray="10 5"/>
+            <path d="M 0 320 Q 250 150 800 280" fill="none" stroke="rgba(176,38,255,0.3)" stroke-width="4"/>
+          </svg>
+
+          <!-- Pins -->
+          <div class="map-pin" style="top: 35%; left: 28%;" onclick="selectMapPin('broder')">
+            <div class="pin-body">
+              <i data-lucide="music" style="width: 14px; color: var(--accent);"></i>
+              Bröder Club (La Plata)
+            </div>
+            <div class="pin-pulse"></div>
+          </div>
+
+          <div class="map-pin" style="top: 48%; left: 72%;" onclick="selectMapPin('uniclub')">
+            <div class="pin-body">
+              <i data-lucide="disc" style="width: 14px; color: var(--primary);"></i>
+              Uniclub (Abasto CABA)
+            </div>
+            <div class="pin-pulse"></div>
+          </div>
+
+          <div class="map-pin" style="top: 70%; left: 62%;" onclick="selectMapPin('cavern')">
+            <div class="pin-body">
+              <i data-lucide="zap" style="width: 14px; color: var(--accent);"></i>
+              The Cavern Bar
+            </div>
+            <div class="pin-pulse"></div>
+          </div>
+
+          <div class="map-pin" style="top: 25%; left: 18%;" onclick="selectMapPin('puravida')">
+            <div class="pin-body">
+              <i data-lucide="flame" style="width: 14px; color: #FF9F43;"></i>
+              Pura Vida Bar
+            </div>
+            <div class="pin-pulse"></div>
+          </div>
+
+          <!-- Map Popup -->
+          <div class="map-popup" id="mapPopup">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 42px; height: 42px; border-radius: 8px; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; color: #fff;" id="popupAvatar">
+                BC
+              </div>
+              <div>
+                <h4 style="font-size: 0.95rem; color: #fff;" id="popupVenueTitle">Bröder Club (La Plata)</h4>
+                <p style="font-size: 0.78rem; color: var(--text-muted);" id="popupVenueSub">Calle 51 #620 — Show hoy 22:00 hs</p>
+              </div>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button class="btn btn-outline" style="padding: 0.4rem 0.75rem; font-size: 0.78rem;" onclick="openVenueWallModal(activeMapVenueId)">
+                💬 Ver Muro del Bar
+              </button>
+              <button class="btn btn-accent" style="padding: 0.4rem 0.75rem; font-size: 0.78rem;" id="popupActionBtn" onclick="triggerTap1(activeMapVenueId)">
+                Entradas ($3.500)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feed Section Header -->
+      <div class="section-header">
+        <h3 class="section-title">
+          <i data-lucide="radio" style="color: var(--accent);"></i> Feed Global de Eventos
+        </h3>
+        <span style="font-size: 0.82rem; color: var(--text-muted);">Tocá en el nombre del bar para abrir su Muro Social estilo Facebook</span>
+      </div>
+
+      <!-- Feed Grid -->
+      <div class="feed-container" id="feedList">
+
+        <!-- Card 1: Bröder -->
+        <article class="post-card" data-genre="Rock">
+          <div class="post-header">
+            <div class="venue-info">
+              <img src="assets/rock_band_flyer_1786749368224.jpg" class="venue-avatar" alt="Bröder" onclick="openVenueWallModal('broder')">
+              <div>
+                <a href="#" class="venue-name" onclick="openVenueWallModal('broder'); return false;">
+                  Bröder Club <i data-lucide="check-circle-2" style="width: 14px; color: var(--accent);"></i>
+                </a>
+                <div class="venue-location">
+                  <i data-lucide="map-pin" style="width: 12px;"></i> La Plata — A 1.2 km
+                </div>
+              </div>
+            </div>
+            <span class="badge-post badge-event-tag">SHOW HOY</span>
+          </div>
+
+          <div class="post-content">
+            <h3 class="post-title">The Raveled Live + Chaos Reign</h3>
+            <p class="post-desc">Rock alternativo e indie distortion. Cerveza artesanal 2x1 hasta las 21 hs.</p>
+          </div>
+
+          <div class="post-media-box">
+            <img src="assets/rock_band_flyer_1786749368224.jpg" class="post-img" alt="Flyer Rock">
+            <div class="media-overlay-details">
+              <div class="event-meta">
+                <span class="meta-item"><i data-lucide="calendar" style="width: 13px; color: var(--accent);"></i> Hoy 22:00 hs</span>
+                <span class="meta-item"><i data-lucide="music" style="width: 13px; color: var(--primary);"></i> Rock / Alternative</span>
+              </div>
+              <div class="event-price-tag">$3.500</div>
+            </div>
+          </div>
+
+          <div class="post-footer">
+            <button class="btn btn-primary" onclick="triggerTap1('broder')">
+              <i data-lucide="shopping-bag" style="width: 15px;"></i> Comprar entrada — $3.500
+            </button>
+          </div>
+        </article>
+
+        <!-- Card 2: Uniclub -->
+        <article class="post-card" data-genre="Jazz">
+          <div class="post-header">
+            <div class="venue-info">
+              <img src="assets/jazz_indie_flyer_1786749385338.jpg" class="venue-avatar" alt="Uniclub" onclick="openVenueWallModal('uniclub')">
+              <div>
+                <a href="#" class="venue-name" onclick="openVenueWallModal('uniclub'); return false;">
+                  Uniclub Abasto <i data-lucide="check-circle-2" style="width: 14px; color: var(--accent);"></i>
+                </a>
+                <div class="venue-location">
+                  <i data-lucide="map-pin" style="width: 12px;"></i> Abasto, CABA
+                </div>
+              </div>
+            </div>
+            <span class="badge-post badge-event-tag">SÁB 26 OCT</span>
+          </div>
+
+          <div class="post-content">
+            <h3 class="post-title">Neon Veil — Synthwave Live Set</h3>
+            <p class="post-desc">Saxo nocturno y proyecciones inmersivas con Synthetic Dreams.</p>
+          </div>
+
+          <div class="post-media-box">
+            <img src="assets/jazz_indie_flyer_1786749385338.jpg" class="post-img" alt="Flyer Jazz Synth">
+            <div class="media-overlay-details">
+              <div class="event-meta">
+                <span class="meta-item"><i data-lucide="calendar" style="width: 13px; color: var(--accent);"></i> Sáb 26 Oct — 21:00 hs</span>
+                <span class="meta-item"><i data-lucide="music" style="width: 13px; color: var(--primary);"></i> Synthwave / Jazz</span>
+              </div>
+              <div class="event-price-tag">$4.200</div>
+            </div>
+          </div>
+
+          <div class="post-footer">
+            <button class="btn btn-primary" onclick="triggerTap1('uniclub')">
+              <i data-lucide="shopping-bag" style="width: 15px;"></i> Comprar entrada — $4.200
+            </button>
+          </div>
+        </article>
+
+        <!-- Admin Sponsored Ad -->
+        <div class="ad-banner-card">
+          <div class="ad-header">
+            <span class="ad-tag">⚡ ANUNCIO DESTACADO DE VENUE</span>
+            <span class="ad-note">Los usuarios Premium no ven publicidad</span>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+            <div>
+              <h4 style="font-size: 0.98rem; color: #fff; margin-bottom: 3px;">Pura Vida Bar — Pintas a $1.800</h4>
+              <p style="font-size: 0.78rem; color: var(--text-muted);">Diag 78 #733, La Plata — Presentando la app en la barra.</p>
+            </div>
+            <button class="btn btn-outline" style="white-space: nowrap; font-size: 0.78rem;" onclick="openVenueWallModal('puravida')">
+              Entrar al Muro del Bar
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 3: Cavern -->
+        <article class="post-card" data-genre="Electrónica">
+          <div class="post-header">
+            <div class="venue-info">
+              <img src="assets/cumbia_electro_flyer_1786749409158.jpg" class="venue-avatar" alt="The Cavern" onclick="openVenueWallModal('cavern')">
+              <div>
+                <a href="#" class="venue-name" onclick="openVenueWallModal('cavern'); return false;">
+                  The Cavern Bar <i data-lucide="check-circle-2" style="width: 14px; color: var(--accent);"></i>
+                </a>
+                <div class="venue-location">
+                  <i data-lucide="map-pin" style="width: 12px;"></i> Paseo La Plaza, CABA
+                </div>
+              </div>
+            </div>
+            <span class="badge-post badge-promo-tag">FIESTA LATE NIGHT</span>
+          </div>
+
+          <div class="post-content">
+            <h3 class="post-title">Underground Resonance DJ Set</h3>
+            <p class="post-desc">Sets en vivo de música electrónica analógica hasta las 5 AM.</p>
+          </div>
+
+          <div class="post-media-box">
+            <img src="assets/cumbia_electro_flyer_1786749409158.jpg" class="post-img" alt="Flyer Electro">
+            <div class="media-overlay-details">
+              <div class="event-meta">
+                <span class="meta-item"><i data-lucide="calendar" style="width: 13px; color: var(--accent);"></i> Vie 25 Oct — 23:30 hs</span>
+                <span class="meta-item"><i data-lucide="music" style="width: 13px; color: var(--primary);"></i> Electrónica / Tech</span>
+              </div>
+              <div class="event-price-tag">$3.000</div>
+            </div>
+          </div>
+
+          <div class="post-footer">
+            <button class="btn btn-primary" onclick="triggerTap1('cavern')">
+              <i data-lucide="shopping-bag" style="width: 15px;"></i> Comprar entrada — $3.000
+            </button>
+          </div>
+        </article>
+
+        <!-- Card 4: Pura Vida -->
+        <article class="post-card" data-genre="Cumbia">
+          <div class="post-header">
+            <div class="venue-info">
+              <img src="assets/rock_band_flyer_1786749368224.jpg" class="venue-avatar" alt="Pura Vida" onclick="openVenueWallModal('puravida')">
+              <div>
+                <a href="#" class="venue-name" onclick="openVenueWallModal('puravida'); return false;">
+                  Pura Vida Bar <i data-lucide="check-circle-2" style="width: 14px; color: var(--accent);"></i>
+                </a>
+                <div class="venue-location">
+                  <i data-lucide="map-pin" style="width: 12px;"></i> La Plata — A 0.9 km
+                </div>
+              </div>
+            </div>
+            <span class="badge-post badge-promo-tag">ENTRADA LIBRE</span>
+          </div>
+
+          <div class="post-content">
+            <h3 class="post-title">Fiesta Cumbiera & Funk en Vivo</h3>
+            <p class="post-desc">Ritmos tropicales, bandas en vivo y baile en el templo platense.</p>
+          </div>
+
+          <div class="post-media-box">
+            <img src="assets/rock_band_flyer_1786749368224.jpg" class="post-img" alt="Pura Vida">
+            <div class="media-overlay-details">
+              <div class="event-meta">
+                <span class="meta-item"><i data-lucide="calendar" style="width: 13px; color: var(--accent);"></i> Hoy 23:00 hs</span>
+                <span class="meta-item"><i data-lucide="music" style="width: 13px; color: var(--primary);"></i> Cumbia / Funk</span>
+              </div>
+              <div class="event-price-tag">GRATIS</div>
+            </div>
+          </div>
+
+          <div class="post-footer">
+            <button class="btn btn-outline" onclick="openVenueWallModal('puravida')">
+              <i data-lucide="layout" style="width: 15px;"></i> Ver Muro del Bar
+            </button>
+          </div>
+        </article>
+
+      </div>
+
+    </div>
+
+    <!-- Sidebar Right -->
+    <div class="sidebar">
+
+      <!-- Widget: Mis Entradas -->
+      <div class="sidebar-widget">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.85rem;">
+          <h4 style="font-size: 0.95rem; color: #fff;" class="font-title">
+            <i data-lucide="qr-code" style="color: var(--accent); vertical-align: middle;"></i> Mi Entrada Activa
+          </h4>
+          <span style="font-size: 0.68rem; background: rgba(0,229,199,0.15); color: var(--accent); padding: 2px 6px; border-radius: 4px; font-weight: 700;">VÁLIDA</span>
+        </div>
+
+        <div class="tickets-preview-box">
+          <div>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Evento confirmado</span>
+            <h5 style="font-size: 0.92rem; color: #fff; font-weight: 700;">The Raveled Live</h5>
+            <p style="font-size: 0.78rem; color: var(--text-muted);">Bröder Club — Hoy 22:00 hs</p>
+          </div>
+
+          <div class="qr-container">
+            <svg class="qr-code-img" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" fill="white"/>
+              <rect x="10" y="10" width="25" height="25" fill="#0B0B0F"/>
+              <rect x="15" y="15" width="15" height="15" fill="white"/>
+              <rect x="18" y="18" width="9" height="9" fill="#B026FF"/>
+
+              <rect x="65" y="10" width="25" height="25" fill="#0B0B0F"/>
+              <rect x="70" y="15" width="15" height="15" fill="white"/>
+              <rect x="73" y="18" width="9" height="9" fill="#B026FF"/>
+
+              <rect x="10" y="65" width="25" height="25" fill="#0B0B0F"/>
+              <rect x="15" y="70" width="15" height="15" fill="white"/>
+              <rect x="18" y="73" width="9" height="9" fill="#B026FF"/>
+
+              <rect x="40" y="10" width="8" height="8" fill="#0B0B0F"/>
+              <rect x="50" y="40" width="15" height="15" fill="#00E5C7"/>
+              <rect x="65" y="65" width="12" height="12" fill="#0B0B0F"/>
+            </svg>
+            <span style="font-size: 0.7rem; color: #333; font-weight: 700; font-family: monospace;">TK-BRODER-8924</span>
+          </div>
+
+          <p style="font-size: 0.72rem; text-align: center; color: var(--accent); font-weight: 600;">
+            <i data-lucide="shield-check" style="width: 13px; vertical-align: middle;"></i> Mostrá este código en la puerta
+          </p>
+        </div>
+      </div>
+
+      <!-- Widget: Bares (Abrir Muro) -->
+      <div class="sidebar-widget">
+        <h4 style="font-size: 0.92rem; color: #fff; margin-bottom: 0.75rem;" class="font-title">
+          ⭐ Bares Oficiales (Muros)
+        </h4>
+        <div style="display: flex; flex-direction: column; gap: 10px;" id="sidebarVenuesList">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+    </div>
+
+  </div> <!-- End Main Grid -->
+
+  <!-- Mobile Bottom Nav Bar -->
+  <div class="mobile-bottom-nav">
+    <button class="mobile-tab-btn active" onclick="switchNavTab(this, 'feedView')">
+      <i data-lucide="map-pin" style="width: 20px;"></i>
+      <span>Mapa</span>
+    </button>
+    <button class="mobile-tab-btn" onclick="focusSearch()">
+      <i data-lucide="radio" style="width: 20px;"></i>
+      <span>Feed</span>
+    </button>
+    <button class="mobile-tab-btn" onclick="openTicketsModal()">
+      <i data-lucide="ticket" style="width: 20px;"></i>
+      <span>Entradas</span>
+    </button>
+    <button class="mobile-tab-btn" onclick="openVenueWallModal('broder')">
+      <i data-lucide="layout" style="width: 20px;"></i>
+      <span>Muro Bar</span>
+    </button>
+  </div>
+
+</div> <!-- End App Container -->
+
+<!-- ================= MODALS & DRAWERS ================= -->
+
+<!-- TAP 1: Event Detail Modal -->
+<div class="modal-overlay" id="eventDetailModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3 style="font-size: 1.05rem; color: #fff;" class="font-title">Detalle del Evento (Tap 1 de 3)</h3>
+      <button class="btn btn-outline btn-icon" onclick="closeModal('eventDetailModal')"><i data-lucide="x"></i></button>
+    </div>
+    <div class="modal-body">
+      <img src="assets/rock_band_flyer_1786749368224.jpg" id="modalEventImg" style="width: 100%; height: 160px; object-fit: cover; border-radius: 12px; margin-bottom: 0.85rem;" alt="Flyer">
+      <h2 style="font-size: 1.25rem; color: #fff; margin-bottom: 4px;" id="modalEventTitle">The Raveled Live @ Bröder Club</h2>
+      <p style="font-size: 0.82rem; color: var(--accent); margin-bottom: 0.85rem;" id="modalEventMeta">📍 Calle 51 #620, La Plata — Sábado 19 Oct, 22:00 hs</p>
+
+      <div style="background: var(--bg-dark); padding: 0.85rem; border-radius: 10px; border: 1px solid var(--border-light); margin-bottom: 0.85rem;">
+        <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Entrada Seleccionada:</label>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <strong style="color: #fff; font-size: 0.9rem;">General — Entrada Digital QR</strong>
+            <div style="font-size: 0.74rem; color: var(--text-muted);">Incluye 1 consumición en la barra</div>
+          </div>
+          <span style="font-size: 1.15rem; font-weight: 700; color: var(--accent);" id="modalEventPrice">$3.500</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" style="flex: 1;" onclick="closeModal('eventDetailModal')">Volver</button>
+      <button class="btn btn-primary" style="flex: 2;" onclick="triggerTap2()">
+        Pagar con Mercado Pago <i data-lucide="arrow-right"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TAP 2: Mercado Pago Checkout Modal -->
+<div class="modal-overlay" id="mpCheckoutModal">
+  <div class="modal-card" style="border-color: #009EE3;">
+    <div class="mp-brand-header">
+      <div class="mp-logo-text">
+        <i data-lucide="credit-card"></i> Mercado Pago Checkout
+      </div>
+      <span style="font-size: 0.75rem; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px;">PAGO SEGURO</span>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom: 1rem;">
+        <span style="font-size: 0.78rem; color: var(--text-muted);">Total a pagar:</span>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #fff;" id="mpModalPrice">$3.500 ARS</div>
+        <p style="font-size: 0.78rem; color: var(--text-muted);" id="mpModalEvent">1x Entrada — The Raveled Live</p>
+      </div>
+
+      <h4 style="font-size: 0.85rem; color: #fff; margin-bottom: 0.65rem;">Medio de pago preferido:</h4>
+      
+      <div class="mp-option selected">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i data-lucide="wallet" style="color: #009EE3;"></i>
+          <div>
+            <strong style="font-size: 0.88rem; color: #fff;">Dinero en cuenta Mercado Pago</strong>
+            <div style="font-size: 0.72rem; color: var(--accent);">Disponible: $24.500</div>
+          </div>
+        </div>
+        <input type="radio" checked name="mp_method">
+      </div>
+
+      <div class="mp-option">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i data-lucide="credit-card" style="color: var(--primary);"></i>
+          <div>
+            <strong style="font-size: 0.88rem; color: #fff;">Tarjeta de Débito / Crédito</strong>
+            <div style="font-size: 0.72rem; color: var(--text-muted);">Visa **** 4920</div>
+          </div>
+        </div>
+        <input type="radio" name="mp_method">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('mpCheckoutModal')">Cancelar</button>
+      <button class="btn btn-accent" style="flex: 1;" onclick="triggerTap3()">
+        <i data-lucide="check-circle" style="width: 16px;"></i> Confirmar Pago ($3.500)
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TAP 3: Success QR Modal -->
+<div class="modal-overlay" id="mpSuccessModal">
+  <div class="modal-card" style="border-color: var(--accent);">
+    <div class="modal-header" style="background: rgba(0,229,199,0.1);">
+      <h3 style="font-size: 1.05rem; color: var(--accent);" class="font-title">
+        <i data-lucide="sparkles" style="vertical-align: middle;"></i> ¡Pago Aprobado!
+      </h3>
+      <button class="btn btn-outline btn-icon" onclick="closeModal('mpSuccessModal')"><i data-lucide="x"></i></button>
+    </div>
+    <div class="modal-body" style="text-align: center;">
+      <div style="width: 54px; height: 54px; border-radius: 50%; background: var(--accent); color: #000; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.85rem auto; box-shadow: 0 0 20px var(--accent-glow);">
+        <i data-lucide="check" style="width: 32px; height: 32px; stroke-width: 3;"></i>
+      </div>
+      <h2 style="font-size: 1.3rem; color: #fff; margin-bottom: 4px;">¡Entrada confirmada!</h2>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Guardada en tu cuenta de UNDERGROUND.</p>
+
+      <div class="qr-container" style="max-width: 220px; margin: 0 auto 0.85rem auto;">
+        <svg class="qr-code-img" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 140px; height: 140px;">
+          <rect width="100" height="100" fill="white"/>
+          <rect x="10" y="10" width="25" height="25" fill="#0B0B0F"/>
+          <rect x="15" y="15" width="15" height="15" fill="white"/>
+          <rect x="18" y="18" width="9" height="9" fill="#B026FF"/>
+          <rect x="65" y="10" width="25" height="25" fill="#0B0B0F"/>
+          <rect x="70" y="15" width="15" height="15" fill="white"/>
+          <rect x="73" y="18" width="9" height="9" fill="#B026FF"/>
+          <rect x="10" y="65" width="25" height="25" fill="#0B0B0F"/>
+          <rect x="15" y="70" width="15" height="15" fill="white"/>
+          <rect x="18" y="73" width="9" height="9" fill="#B026FF"/>
+          <rect x="40" y="10" width="8" height="8" fill="#0B0B0F"/>
+          <rect x="50" y="40" width="15" height="15" fill="#00E5C7"/>
+          <rect x="65" y="65" width="12" height="12" fill="#0B0B0F"/>
+        </svg>
+        <span style="font-size: 0.78rem; color: #000; font-weight: 800; font-family: monospace;" id="successQrCode">TK-BRODER-9921</span>
+      </div>
+
+      <div style="background: var(--bg-dark); padding: 0.75rem; border-radius: 8px; font-size: 0.78rem; color: var(--text-main);">
+        <strong>Presentar en la puerta del bar</strong>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" style="width: 100%;" onclick="closeModal('mpSuccessModal');">
+        Listo
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= FACEBOOK-STYLE VENUE WALL MODAL ================= -->
+<div class="modal-overlay" id="venueWallModal">
+  <div class="modal-card wall-modal-card">
+    
+    <!-- Cover Image Header -->
+    <div class="wall-cover-container">
+      <img src="assets/rock_band_flyer_1786749368224.jpg" class="wall-cover-img" id="wallCoverImg" alt="Cover Bar">
+      <div class="wall-cover-overlay"></div>
+      <button class="btn btn-outline btn-icon" style="position: absolute; top: 1rem; right: 1rem; background: rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.2); color: #fff;" onclick="closeModal('venueWallModal')">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+
+    <!-- Profile Header Info -->
+    <div class="wall-profile-header">
+      <div class="wall-header-top">
+        <img src="assets/rock_band_flyer_1786749368224.jpg" class="wall-avatar" id="wallAvatarImg" alt="Avatar Bar">
+        
+        <div class="wall-header-actions">
+          <button class="btn btn-accent" id="wallFollowBtn" onclick="toggleWallFollow()">
+            <i data-lucide="bell" style="width: 15px;"></i> Seguir & Avisos
+          </button>
+          <button class="btn btn-outline" onclick="showShareToast()">
+            <i data-lucide="share-2" style="width: 15px;"></i> Compartir
+          </button>
+        </div>
+      </div>
+
+      <div class="wall-title-box">
+        <div class="wall-venue-name" id="wallVenueName">
+          Bröder Club <i data-lucide="check-circle-2" style="color: var(--accent); width: 20px;"></i>
+        </div>
+        <div class="wall-category" id="wallVenueCategory">
+          <span>Bar & Sala de Conciertos Underground</span> · <span id="wallFollowersCount" style="color: var(--accent); font-weight: 700;">1.420 seguidores</span>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;" id="wallAddressText">
+          📍 Calle 51 #620 e/ 7 y 8, La Plata — A 1.2 km de vos
+        </div>
+      </div>
+    </div>
+
+    <!-- Wall Navigation Tabs -->
+    <div class="wall-nav-bar">
+      <button class="wall-tab-btn active" id="wTabMuro" onclick="switchWallTab('muro')">
+        <i data-lucide="layout" style="width: 15px;"></i> Muro del Bar
+      </button>
+      <button class="wall-tab-btn" id="wTabAgenda" onclick="switchWallTab('agenda')">
+        <i data-lucide="calendar" style="width: 15px;"></i> Agenda Shows
+      </button>
+      <button class="wall-tab-btn" id="wTabPromos" onclick="switchWallTab('promos')">
+        <i data-lucide="beer" style="width: 15px;"></i> Promos & HH
+      </button>
+      <button class="wall-tab-btn" id="wTabInfo" onclick="switchWallTab('info')">
+        <i data-lucide="info" style="width: 15px;"></i> Info & Servicios
+      </button>
+    </div>
+
+    <!-- Wall Body Content Area -->
+    <div class="wall-body-content" id="wallBodyContent">
+      <!-- Populated dynamically via JS -->
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Complete Real Venues & Wall Database
+  const venuesData = {
+    broder: {
+      id: 'broder',
+      name: 'Bröder Club',
+      city: 'La Plata',
+      category: 'Bar & Sala de Conciertos Underground · La Plata',
+      address: '📍 Calle 51 #620 e/ 7 y 8, La Plata (A 1.2 km)',
+      avatar: 'assets/rock_band_flyer_1786749368224.jpg',
+      cover: 'assets/rock_band_flyer_1786749368224.jpg',
+      bio: 'Espacio cultural independiente de La Plata. Escenario de rock alternativo, punk e indie live, 8 canillas de cerveza artesanal tirada y patio al aire libre.',
+      followers: '1.420 seguidores',
+      isFollowing: true,
+      services: [
+        { icon: 'beer', text: 'Cerveza Artesanal (8 Canillas)' },
+        { icon: 'music', text: 'Escenario Pro Audio HD' },
+        { icon: 'sun', text: 'Patio & Terraza' },
+        { icon: 'utensils', text: 'Burgers & Tapas' }
+      ],
+      promos: [
+        { title: '🍻 Happy Hour 2x1 en Pintas', detail: 'Viernes y Sábados de 19:00 a 21:00 hs' },
+        { title: '🎟️ Combo Entrada + Consumición', detail: 'Comprando por UNDERGROUND te incluye 1 consumición en la barra' }
+      ],
+      agenda: [
+        { date: 'HOY 22:00 HS', title: 'The Raveled Live + Chaos Reign', price: '$3.500', eventKey: 'broder' },
+        { date: 'VIE 25 OCT — 23:00 HS', title: 'Noche de Punk & Garage Bands', price: '$2.800', eventKey: 'broder' },
+        { date: 'SÁB 02 NOV — 21:30 HS', title: 'Festival Indie Bonaerense', price: '$4.000', eventKey: 'broder' }
+      ],
+      wallPosts: [
+        {
+          id: 101,
+          time: 'Publicado hace 2 horas · 📢 Anuncio Oficial',
+          text: '🔥 ¡ESTE VIERNES EXPLOTA BRÖDER! Llega The Raveled en vivo junto a Chaos Reign. Abrimos puertas a las 21:00 hs con Happy Hour 2x1 en pintas artesanales de IPA y Honey hasta las 22 hs. ¡Sacá tu entrada anticipada antes que se agoten!',
+          image: 'assets/rock_band_flyer_1786749368224.jpg',
+          likes: 84,
+          isLiked: false,
+          hasBuyButton: true,
+          buyPrice: '$3.500',
+          buyTitle: 'The Raveled Live'
+        },
+        {
+          id: 102,
+          time: 'Publicado ayer a las 18:30 hs · 🍻 Promo del Bar',
+          text: '🍻 Cerveza tirada helada, hamburguesas caseras y patio al aire libre. Recordá que presentando tu app UNDERGROUND tenés 15% de descuento en la barra de jueves a domingos. ¡Te esperamos!',
+          image: null,
+          likes: 42,
+          isLiked: true,
+          hasBuyButton: false
+        },
+        {
+          id: 103,
+          time: 'Publicado el Domingo · 📸 Recuerdo del Finde',
+          text: '📸 ¡Gracias a todos los que vinieron a la fecha del sábado! Tremendo pogo y energía. Nos vemos este finde para otra noche de rock.',
+          image: 'assets/rock_band_flyer_1786749368224.jpg',
+          likes: 129,
+          isLiked: false,
+          hasBuyButton: false
+        }
+      ]
+    },
+    uniclub: {
+      id: 'uniclub',
+      name: 'Uniclub Abasto',
+      city: 'Abasto CABA',
+      category: 'Club de Música en Vivo & Synthwave · CABA',
+      address: '📍 Guardia Vieja 3360, Abasto, CABA (A 4.8 km)',
+      avatar: 'assets/jazz_indie_flyer_1786749385338.jpg',
+      cover: 'assets/jazz_indie_flyer_1786749385338.jpg',
+      bio: 'Club de música en vivo y espacio multicultural en el corazón del Abasto. Shows nacionales e internacionales, synthwave y jazz nights.',
+      followers: '3.890 seguidores',
+      isFollowing: false,
+      services: [
+        { icon: 'disc', text: 'Capacidad 500 Personas' },
+        { icon: 'zap', text: 'Show de Luces & Láser' },
+        { icon: 'cocktail', text: 'Barra Internacional' },
+        { icon: 'shield-check', text: 'Seguridad Privada' }
+      ],
+      promos: [
+        { title: '🍸 2x1 en Fernet & Tragos', detail: 'De 20:00 a 22:00 hs abonando con Mercado Pago' }
+      ],
+      agenda: [
+        { date: 'SÁB 26 OCT — 21:00 HS', title: 'Neon Veil Tour (Synthwave Live)', price: '$4.200', eventKey: 'uniclub' },
+        { date: 'VIE 01 NOV — 23:30 HS', title: 'Jam Session & Jazz Fusión', price: '$3.200', eventKey: 'uniclub' }
+      ],
+      wallPosts: [
+        {
+          id: 201,
+          time: 'Publicado hace 4 horas · 🎷 Show Confirmado',
+          text: '🎷 ¡Confirmado! Sábado 26 de Octubre recibimos a Neon Veil en su gira Synthwave Tour. Un show audiovisual imperdible con saxo en vivo y proyecciones inmersivas. Consigue tu entrada directa en el muro.',
+          image: 'assets/jazz_indie_flyer_1786749385338.jpg',
+          likes: 156,
+          isLiked: false,
+          hasBuyButton: true,
+          buyPrice: '$4.200',
+          buyTitle: 'Neon Veil Tour'
+        },
+        {
+          id: 202,
+          time: 'Publicado el Martes · 🍸 Novedades de la Barra',
+          text: '🍸 Sumamos nuevas canillas de Gin Tonic tirado con botánicos patagónicos. Promoción especial 2x1 pagando desde Mercado Pago en la barra.',
+          image: null,
+          likes: 67,
+          isLiked: false,
+          hasBuyButton: false
+        }
+      ]
+    },
+    cavern: {
+      id: 'cavern',
+      name: 'The Cavern Bar',
+      city: 'Paseo La Plaza CABA',
+      category: 'Bar Subterráneo & Cabina Electrónica · CABA',
+      address: '📍 Av. Corrientes 1660 (Paseo La Plaza), CABA',
+      avatar: 'assets/cumbia_electro_flyer_1786749409158.jpg',
+      cover: 'assets/cumbia_electro_flyer_1786749409158.jpg',
+      bio: 'Mítico bar subterráneo inspirado en Liverpool. Electrónica analógica, DJ sets en vivo y coctelería de autor.',
+      followers: '2.150 seguidores',
+      isFollowing: false,
+      services: [
+        { icon: 'radio', text: 'Subterráneo Acústico' },
+        { icon: 'coffee', text: 'Coctelería de Autor' },
+        { icon: 'sparkles', text: 'Cabina DJ Pro' }
+      ],
+      promos: [
+        { title: '🔥 Entrada Libre antes de las 00 hs', detail: 'Mencionando la app UNDERGROUND en el ingreso' }
+      ],
+      agenda: [
+        { date: 'VIE 25 OCT — 23:30 HS', title: 'Underground Resonance DJ Set', price: '$3.000', eventKey: 'cavern' },
+        { date: 'SÁB 02 NOV — 01:00 AM', title: 'Techno Midnight Session', price: '$3.500', eventKey: 'cavern' }
+      ],
+      wallPosts: [
+        {
+          id: 301,
+          time: 'Publicado hace 1 día · ⚡ Late Night Session',
+          text: '⚡ Este viernes bajamos al sótano para una nueva edición de Underground Resonance. Sets b2b de house analógico y techno fino hasta las 5 AM.',
+          image: 'assets/cumbia_electro_flyer_1786749409158.jpg',
+          likes: 98,
+          isLiked: true,
+          hasBuyButton: true,
+          buyPrice: '$3.000',
+          buyTitle: 'Underground Resonance'
+        }
+      ]
+    },
+    puravida: {
+      id: 'puravida',
+      name: 'Pura Vida Bar',
+      city: 'La Plata',
+      category: 'Templo de la Contracultura & Vivo · La Plata',
+      address: '📍 Diagonal 78 #733 e/ 8 y 61, La Plata',
+      avatar: 'assets/rock_band_flyer_1786749368224.jpg',
+      cover: 'assets/rock_band_flyer_1786749368224.jpg',
+      bio: 'Templo de la contracultura Platense. Música en vivo todas las noches, cumbia, funk, ska y garage rock sin etiquetas.',
+      followers: '4.980 seguidores',
+      isFollowing: true,
+      services: [
+        { icon: 'flame', text: 'Vivo Todos los Días' },
+        { icon: 'beer', text: 'Pintas Artesanales Promocionales' },
+        { icon: 'heart', text: 'Ambiente Inclusivo' }
+      ],
+      promos: [
+        { title: '🍻 Pintas a $1.800 toda la noche', detail: 'Presentando la app UNDERGROUND en la barra' }
+      ],
+      agenda: [
+        { date: 'HOY 23:00 HS', title: 'Fiesta Cumbiera & Funk en Vivo', price: 'Gratis', eventKey: 'puravida' },
+        { date: 'DOM 20 OCT — 20:00 HS', title: 'Acústicos bajo las estrellas', price: '$1.500', eventKey: 'puravida' }
+      ],
+      wallPosts: [
+        {
+          id: 401,
+          time: 'Publicado hoy a las 16:00 hs · 🪗 Noche Tropical',
+          text: '🪗 ¡HOY SE BAILA EN PURA VIDA! Fiesta cumbiera y funk en vivo con entrada libre y gratuita. Pintas a $1.800 toda la noche mostrando tu app UNDERGROUND.',
+          image: 'assets/rock_band_flyer_1786749368224.jpg',
+          likes: 210,
+          isLiked: true,
+          hasBuyButton: false
+        }
+      ]
+    }
+  };
+
+  let activeWallVenueId = 'broder';
+  let activeWallTab = 'muro';
+  let activeMapVenueId = 'broder';
+
+  // Initialize Page
+  window.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons();
+    renderSidebarVenues();
+  });
+
+  function renderSidebarVenues() {
+    const container = document.getElementById('sidebarVenuesList');
+    container.innerHTML = '';
+
+    Object.values(venuesData).forEach(venue => {
+      const div = document.createElement('div');
+      div.style.cssText = 'display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-light); padding-bottom: 6px;';
+      div.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px; cursor: pointer;" onclick="openVenueWallModal('${venue.id}')">
+          <img src="${venue.avatar}" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--primary);" alt="${venue.name}">
+          <div>
+            <strong style="font-size: 0.83rem; color: #fff; display: flex; align-items: center; gap: 4px;">
+              ${venue.name}
+            </strong>
+            <span style="font-size: 0.7rem; color: var(--text-muted);">${venue.city}</span>
+          </div>
+        </div>
+        <button class="btn ${venue.isFollowing ? 'btn-accent' : 'btn-outline'}" style="padding: 2px 8px; font-size: 0.7rem;" onclick="toggleFollowVenueSidebar(this, '${venue.id}')">
+          ${venue.isFollowing ? 'Siguiendo' : 'Seguir'}
+        </button>
+      `;
+      container.appendChild(div);
+    });
+    lucide.createIcons();
+  }
+
+  /* Open Venue Facebook-Style Wall Modal */
+  function openVenueWallModal(venueId) {
+    const venue = venuesData[venueId] || venuesData['broder'];
+    activeWallVenueId = venue.id;
+
+    document.getElementById('wallVenueName').innerHTML = `${venue.name} <i data-lucide="check-circle-2" style="color: var(--accent); width: 20px;"></i>`;
+    document.getElementById('wallVenueCategory').innerHTML = `<span>${venue.category}</span> · <span style="color: var(--accent); font-weight: 700;">${venue.followers}</span>`;
+    document.getElementById('wallAddressText').innerText = venue.address;
+    document.getElementById('wallAvatarImg').src = venue.avatar;
+    document.getElementById('wallCoverImg').src = venue.cover;
+
+    const followBtn = document.getElementById('wallFollowBtn');
+    if (venue.isFollowing) {
+      followBtn.innerHTML = '<i data-lucide="check" style="width:15px;"></i> ¡Siguiendo! Push Activas';
+      followBtn.className = 'btn btn-accent';
+    } else {
+      followBtn.innerHTML = '<i data-lucide="bell" style="width:15px;"></i> Seguir & Avisos';
+      followBtn.className = 'btn btn-outline';
+    }
+
+    switchWallTab('muro');
+    openModal('venueWallModal');
+    lucide.createIcons();
+  }
+
+  /* Switch Wall Tabs */
+  function switchWallTab(tabName) {
+    activeWallTab = tabName;
+    const venue = venuesData[activeWallVenueId];
+
+    document.querySelectorAll('.wall-tab-btn').forEach(b => b.classList.remove('active'));
+    if (tabName === 'muro') document.getElementById('wTabMuro').classList.add('active');
+    if (tabName === 'agenda') document.getElementById('wTabAgenda').classList.add('active');
+    if (tabName === 'promos') document.getElementById('wTabPromos').classList.add('active');
+    if (tabName === 'info') document.getElementById('wTabInfo').classList.add('active');
+
+    const contentArea = document.getElementById('wallBodyContent');
+
+    if (tabName === 'muro') {
+      // Facebook-Style Wall Feed Posts
+      contentArea.innerHTML = `
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: 12px; padding: 0.85rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 10px;">
+          <img src="${venue.avatar}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
+          <div style="background: var(--bg-dark); border: 1px solid var(--border-light); padding: 8px 14px; border-radius: 20px; flex: 1; color: var(--text-muted); font-size: 0.82rem;">
+            Publicación oficial del bar verificado
+          </div>
+        </div>
+
+        ${venue.wallPosts.map(post => `
+          <div class="wall-post">
+            <div class="wall-post-header">
+              <div class="wall-post-author">
+                <img src="${venue.avatar}" class="wall-author-avatar" alt="${venue.name}">
+                <div>
+                  <strong style="font-size: 0.9rem; color: #fff; display: flex; align-items: center; gap: 4px;">
+                    ${venue.name} <i data-lucide="check-circle-2" style="width: 14px; color: var(--accent);"></i>
+                  </strong>
+                  <div class="wall-post-time">${post.time}</div>
+                </div>
+              </div>
+              <i data-lucide="more-horizontal" style="color: var(--text-dark); cursor: pointer;"></i>
+            </div>
+
+            <div class="wall-post-body">${post.text}</div>
+
+            ${post.image ? `<img src="${post.image}" class="wall-post-image" alt="Post photo">` : ''}
+
+            ${post.hasBuyButton ? `
+              <div style="background: rgba(176,38,255,0.1); border: 1px solid var(--primary); border-radius: 10px; padding: 0.75rem; margin-bottom: 0.85rem; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <strong style="color: #fff; font-size: 0.88rem;">${post.buyTitle}</strong>
+                  <div style="font-size: 0.75rem; color: var(--accent);">Entrada digital disponible</div>
+                </div>
+                <button class="btn btn-primary" style="padding: 0.4rem 0.85rem; font-size: 0.78rem;" onclick="closeModal('venueWallModal'); triggerTap1('${venue.id}')">
+                  Comprar ${post.buyPrice}
+                </button>
+              </div>
+            ` : ''}
+
+            <div class="wall-post-actions">
+              <button class="wall-action-btn ${post.isLiked ? 'liked' : ''}" onclick="toggleLikePost(${post.id})">
+                <i data-lucide="heart" style="width: 16px; fill: ${post.isLiked ? '#FF4757' : 'none'}; color: ${post.isLiked ? '#FF4757' : 'currentColor'};"></i>
+                <span>${post.likes} Me gusta</span>
+              </button>
+              <button class="wall-action-btn">
+                <i data-lucide="message-square" style="width: 16px;"></i> Comentar
+              </button>
+              <button class="wall-action-btn" onclick="showShareToast()">
+                <i data-lucide="share-2" style="width: 16px;"></i> Compartir
+              </button>
+            </div>
+          </div>
+        `).join('')}
+      `;
+    } else if (tabName === 'agenda') {
+      contentArea.innerHTML = `
+        <h4 style="font-size: 0.95rem; color: #fff; margin-bottom: 0.85rem;" class="font-title">📅 Próximos Shows & Eventos:</h4>
+        ${venue.agenda.map(a => `
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: 12px; padding: 1rem; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <span style="font-size: 0.72rem; color: var(--accent); font-weight: 700;">${a.date}</span>
+              <h5 style="font-size: 0.95rem; color: #fff; font-weight: 700;">${a.title}</h5>
+              <p style="font-size: 0.78rem; color: var(--text-muted);">${venue.address}</p>
+            </div>
+            <button class="btn btn-primary" onclick="closeModal('venueWallModal'); triggerTap1('${venue.id}')">
+              Comprar ${a.price}
+            </button>
+          </div>
+        `).join('')}
+      `;
+    } else if (tabName === 'promos') {
+      contentArea.innerHTML = `
+        <h4 style="font-size: 0.95rem; color: #fff; margin-bottom: 0.85rem;" class="font-title">🍻 Promociones & Happy Hour Activos:</h4>
+        ${venue.promos.map(p => `
+          <div style="background: rgba(0,229,199,0.08); border: 1px solid var(--accent); border-radius: 12px; padding: 1rem; margin-bottom: 0.75rem;">
+            <strong style="font-size: 0.95rem; color: #fff;">${p.title}</strong>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">${p.detail}</p>
+          </div>
+        `).join('')}
+      `;
+    } else if (tabName === 'info') {
+      contentArea.innerHTML = `
+        <h4 style="font-size: 0.95rem; color: #fff; margin-bottom: 0.85rem;" class="font-title">ℹ️ Descripción del Venue:</h4>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">${venue.bio}</p>
+        
+        <h4 style="font-size: 0.95rem; color: #fff; margin-bottom: 0.65rem;" class="font-title">🛠️ Servicios & Características:</h4>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+          ${venue.services.map(s => `
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-light); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #fff; display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="${s.icon}" style="width: 14px; color: var(--accent);"></i> ${s.text}
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+    lucide.createIcons();
+  }
+
+  function toggleLikePost(postId) {
+    const venue = venuesData[activeWallVenueId];
+    const post = venue.wallPosts.find(p => p.id === postId);
+    if (post) {
+      post.isLiked = !post.isLiked;
+      post.likes += post.isLiked ? 1 : -1;
+      switchWallTab('muro');
+    }
+  }
+
+  function toggleWallFollow() {
+    const venue = venuesData[activeWallVenueId];
+    venue.isFollowing = !venue.isFollowing;
+    openVenueWallModal(activeWallVenueId);
+    renderSidebarVenues();
+  }
+
+  function toggleFollowVenueSidebar(btn, venueId) {
+    const venue = venuesData[venueId];
+    venue.isFollowing = !venue.isFollowing;
+    renderSidebarVenues();
+  }
+
+  function selectMapPin(venueKey) {
+    activeMapVenueId = venueKey;
+    const venue = venuesData[venueKey];
+    const popupTitle = document.getElementById('popupVenueTitle');
+    const popupSub = document.getElementById('popupVenueSub');
+    const popupAvatar = document.getElementById('popupAvatar');
+    const popupBtn = document.getElementById('popupActionBtn');
+
+    popupTitle.innerText = venue.name + ' (' + venue.city + ')';
+    popupSub.innerText = venue.address;
+    popupAvatar.innerText = venue.name.substring(0, 2).toUpperCase();
+
+    if (venue.agenda && venue.agenda.length > 0) {
+      popupBtn.innerText = 'Entradas (' + venue.agenda[0].price + ')';
+    } else {
+      popupBtn.innerText = 'Ver Muro';
+    }
+  }
+
+  function triggerTap1(eventKey) {
+    const venue = venuesData[eventKey] || venuesData['broder'];
+    const show = venue.agenda[0] || { title: venue.name + ' Event', price: '$3.500', date: 'HOY 22:00 HS' };
+
+    currentSelectedEvent = {
+      title: show.title + ' @ ' + venue.name,
+      price: show.price,
+      meta: venue.address + ' — ' + show.date,
+      img: venue.avatar
+    };
+
+    document.getElementById('modalEventTitle').innerText = currentSelectedEvent.title;
+    document.getElementById('modalEventPrice').innerText = currentSelectedEvent.price;
+    document.getElementById('modalEventMeta').innerText = currentSelectedEvent.meta;
+    document.getElementById('modalEventImg').src = currentSelectedEvent.img;
+
+    openModal('eventDetailModal');
+    lucide.createIcons();
+  }
+
+  function triggerTap2() {
+    closeModal('eventDetailModal');
+    document.getElementById('mpModalPrice').innerText = currentSelectedEvent.price + ' ARS';
+    document.getElementById('mpModalEvent').innerText = '1x Entrada General — ' + currentSelectedEvent.title;
+    openModal('mpCheckoutModal');
+  }
+
+  function triggerTap3() {
+    closeModal('mpCheckoutModal');
+    document.getElementById('successQrCode').innerText = 'TK-' + Math.floor(1000 + Math.random() * 9000) + '-MP';
+    openModal('mpSuccessModal');
+  }
+
+  function toggleMobileView() {
+    window.location.href = 'simulator.html';
+  }
+
+  function selectGenre(btn, genre) {
+    document.querySelectorAll('.genre-chips .chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.post-card');
+    cards.forEach(card => {
+      if (genre === 'all' || card.dataset.genre === genre) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  function filterEvents() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.post-card');
+    cards.forEach(card => {
+      const text = card.innerText.toLowerCase();
+      if (text.includes(query)) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  function focusSearch() {
+    const searchInput = document.getElementById('searchInput');
+    searchInput.focus();
+    searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function openModal(id) {
+    document.getElementById(id).classList.add('active');
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+  }
+  function openTicketsModal() {
+    openModal('mpSuccessModal');
+  }
+  function showPushNotificationToast() {
+    alert('🔔 Notificación Push de ejemplo:\n\n"¡Bröder Club acaba de publicar un nuevo post en su Muro! Tocá para leer las novedades."');
+  }
+  function showShareToast() {
+    alert('🔗 Enlace del Muro del Bar copiado al portapapeles:\nhttps://underground.app/venues/broder-club');
+  }
+  function switchNavTab(element, view) {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.mobile-tab-btn').forEach(b => b.classList.remove('active'));
+    element.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

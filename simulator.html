@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNDERGROUND — Simulador de App Móvil (Smartphone View)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    :root {
+      --bg-dark: #07070A;
+      --bg-surface: #121118;
+      --primary: #B026FF;
+      --accent: #00E5C7;
+      --text-main: #F3F3F7;
+      --text-muted: #9E9EB0;
+      --border-color: rgba(176, 38, 255, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 20% 20%, rgba(176, 38, 255, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(0, 229, 199, 0.15) 0%, transparent 45%);
+    }
+
+    /* Top Control Bar */
+    .top-control-bar {
+      width: 100%;
+      background: rgba(18, 17, 24, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+    }
+
+    .brand-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .device-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .control-btn {
+      background: var(--bg-surface);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-main);
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .control-btn:hover, .control-btn.active {
+      border-color: var(--primary);
+      background: rgba(176, 38, 255, 0.2);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(176, 38, 255, 0.3);
+    }
+
+    /* Studio Stage */
+    .studio-stage {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+      position: relative;
+    }
+
+    /* Phone Shell Frame */
+    .phone-frame {
+      width: 380px;
+      height: 780px;
+      background: #181720;
+      border-radius: 46px;
+      padding: 9px;
+      position: relative;
+      box-shadow: 
+        0 0 0 2px #343343,
+        0 25px 80px rgba(0, 0, 0, 0.95),
+        0 0 50px rgba(176, 38, 255, 0.25);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Screen Wrapper */
+    .screen-wrapper {
+      width: 100%;
+      height: 100%;
+      background: #0B0B0F;
+      border-radius: 38px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Dynamic Island Notch */
+    .notch-bar {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 105px;
+      height: 24px;
+      background: #000;
+      border-radius: 20px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 8px;
+      pointer-events: none;
+    }
+
+    .camera-lens {
+      width: 9px;
+      height: 9px;
+      background: #111;
+      border-radius: 50%;
+      border: 1.5px solid #222;
+    }
+
+    /* Status Bar Overlay */
+    .status-bar {
+      height: 38px;
+      padding: 8px 18px 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      font-size: 0.74rem;
+      font-weight: 600;
+      background: rgba(11, 11, 15, 0.95);
+      z-index: 998;
+      user-select: none;
+    }
+
+    .status-right {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Iframe App Screen */
+    .app-iframe {
+      width: 100%;
+      height: calc(100% - 38px);
+      border: none;
+      background: #0B0B0F;
+    }
+
+    /* Home Indicator */
+    .home-indicator {
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 10px;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    /* Side Control Panel */
+    .shortcut-panel {
+      position: absolute;
+      right: 2.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      width: 230px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    }
+
+    @media (max-width: 1024px) {
+      .shortcut-panel {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Controls -->
+  <div class="top-control-bar">
+    <div class="brand-title">
+      <div style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 0.95rem;">U</div>
+      <span>UNDERGROUND Smartphone View</span>
+    </div>
+
+    <div class="device-controls">
+      <button class="control-btn active" id="btnIphone" onclick="switchDevice('iphone')">
+        <i data-lucide="smartphone" style="width: 14px;"></i> iPhone 15 Pro
+      </button>
+      <button class="control-btn" id="btnAndroid" onclick="switchDevice('android')">
+        <i data-lucide="smartphone" style="width: 14px;"></i> Galaxy S24
+      </button>
+      <a href="preview.html" class="control-btn">
+        <i data-lucide="monitor" style="width: 14px;"></i> Modo Desktop
+      </a>
+    </div>
+  </div>
+
+  <!-- Studio Stage -->
+  <div class="studio-stage">
+
+    <!-- Phone Frame -->
+    <div class="phone-frame" id="phoneFrame">
+      <div class="screen-wrapper">
+        
+        <!-- Dynamic Island -->
+        <div class="notch-bar" id="notchBar">
+          <div class="camera-lens"></div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+          <span id="liveClock">20:46</span>
+          <div class="status-right">
+            <i data-lucide="signal" style="width: 12px;"></i>
+            <i data-lucide="wifi" style="width: 12px;"></i>
+            <i data-lucide="battery-charging" style="width: 14px; color: var(--accent);"></i>
+          </div>
+        </div>
+
+        <!-- App Viewport Iframe -->
+        <iframe src="preview.html" class="app-iframe" id="appIframe"></iframe>
+
+        <!-- Home Indicator -->
+        <div class="home-indicator"></div>
+      </div>
+    </div>
+
+    <!-- Quick Actions Panel -->
+    <div class="shortcut-panel">
+      <h4 style="font-size: 0.9rem; color: #fff; display: flex; align-items: center; gap: 6px;">
+        <i data-lucide="sparkles" style="color: var(--accent); width: 15px;"></i> Accesos del Simulador:
+      </h4>
+      <p style="font-size: 0.75rem; color: var(--text-muted);">
+        Probá la app móvil nativa en la pantalla del celular:
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 4px;">
+        <button class="control-btn" style="justify-content: flex-start;" onclick="navigateApp('mapa')">
+          🗺️ Mapa de Bares
+        </button>
+        <button class="control-btn" style="justify-content: flex-start;" onclick="navigateApp('wall')">
+          💬 Muro del Bar (Facebook)
+        </button>
+        <button class="control-btn" style="justify-content: flex-start;" onclick="navigateApp('mp')">
+          💳 Comprar con MP (3-Tap)
+        </button>
+        <button class="control-btn" style="justify-content: flex-start;" onclick="navigateApp('qr')">
+          🎟️ Entrada Digital QR
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('liveClock').innerText = `${hours}:${minutes}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function switchDevice(model) {
+      const frame = document.getElementById('phoneFrame');
+      const btnIphone = document.getElementById('btnIphone');
+      const btnAndroid = document.getElementById('btnAndroid');
+      const notch = document.getElementById('notchBar');
+
+      if (model === 'android') {
+        frame.style.borderRadius = '34px';
+        notch.style.width = '24px';
+        notch.style.borderRadius = '50%';
+        btnAndroid.classList.add('active');
+        btnIphone.classList.remove('active');
+      } else {
+        frame.style.borderRadius = '46px';
+        notch.style.width = '105px';
+        notch.style.borderRadius = '20px';
+        btnIphone.classList.add('active');
+        btnAndroid.classList.remove('active');
+      }
+    }
+
+    function navigateApp(action) {
+      const iframe = document.getElementById('appIframe');
+      const win = iframe.contentWindow;
+      if (!win) return;
+
+      if (action === 'wall' && win.openVenueWallModal) {
+        win.openVenueWallModal('broder');
+      } else if (action === 'mp' && win.triggerTap1) {
+        win.triggerTap1('broder');
+      } else if (action === 'qr' && win.openTicketsModal) {
+        win.openTicketsModal();
+      } else if (action === 'mapa') {
+        iframe.src = 'preview.html#mapa';
+      }
+    }
+  </script>
+</body>
+</html>
